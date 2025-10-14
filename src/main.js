@@ -110,10 +110,12 @@ k.loop(0.9,()=>{
     })
     bulletCount.text=`Rings: ${ringState.bullet}`;
   }
+});
 
-  // Random video trigger
-  if(counter>=40 && counter<=155&&!videoStarted){
-    if(Math.random()<0.59){
+// Random video trigger
+k.loop(3.0,()=>{
+  if(counter>=45 && counter<=155&&!videoStarted){
+    if(Math.random()<0.25){
       if(!videoStarted){
         playVideo("videos/foxy.mp4",true,()=>{
           console.log("Video ended!");
@@ -124,6 +126,7 @@ k.loop(0.9,()=>{
     }
   }
 });
+
 
 // SHOOT LOGIC
 k.onKeyPress("l",()=>{
