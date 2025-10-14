@@ -29,7 +29,7 @@ function spawnBug(){
       k.offscreen(),
     ])
   
-    k.wait(k.rand(0.5,1.3),()=>{
+    k.wait(k.rand(0.5,1.6),()=>{
       spawnBug();
     });
 }

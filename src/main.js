@@ -3,6 +3,7 @@ import sonic from "./gameObjects/sonic";
 import { fireRing,ringState } from "./gameObjects/ring";
 import spawnBug from "./gameObjects/bug";
 import gameOverScene from "./scene/gameOver";
+import { playVideo } from "./utils/popup";
 
 // SETUP
 k.setGravity(1500);
@@ -13,12 +14,15 @@ spawnBug();
 k.loadSound("bgm","sounds/bg.mp3");
 k.loadSound("gameOver","sounds/vine.mp3")
 k.loadSound("ring","sounds/ring.mp3")
+k.loadSound("ringShoot","sounds/ringshoot.mp3")
 
 let bgMusic=null;
 let gameOver=null;
 let ringGain=null;
+let ringShoot=null;
 
 let musicStarted=false;
+let videoStarted=false;
 
 k.onKeyPress(()=>{
   if(!musicStarted){
@@ -106,6 +110,19 @@ k.loop(0.9,()=>{
     })
     bulletCount.text=`Rings: ${ringState.bullet}`;
   }
+
+  // Random video trigger
+  if(counter>=40 && counter<=155&&!videoStarted){
+    if(Math.random()<0.59){
+      if(!videoStarted){
+        playVideo("videos/foxy.mp4",true,()=>{
+          console.log("Video ended!");
+        });
+        if(bgMusic) bgMusic.stop();
+      }
+      videoStarted=true;
+    }
+  }
 });
 
 // SHOOT LOGIC
@@ -116,6 +133,9 @@ k.onKeyPress("l",()=>{
       bug.destroy();
       ring.destroy();
     });
+    ringShoot=k.play("ringShoot",{
+      volume: 0.1,
+    })
   }
 });
 
