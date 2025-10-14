@@ -8,8 +8,19 @@ import gameOverScene from "./scene/gameOver";
 k.setGravity(1500);
 
 spawnBug();
+k.loadSound("bgm","sounds/bg.mp3")
+
+let bgMusic=null;
+
+k.onLoad(()=>{
+  bgMusic=k.play("bgm",{
+    volume: 0.2,
+    loop:true,
+  })
+})
 
 k.scene("game-over",(score)=>{
+  if(bgMusic) bgMusic.stop();
   gameOverScene(score);
 });
 
@@ -95,7 +106,6 @@ k.onKeyPress("l",()=>{
 });
 
 //GAME OVER SCREEN
-
 sonic.onCollide("bug",()=>{
   k.shake();
   sonic.destroy();
