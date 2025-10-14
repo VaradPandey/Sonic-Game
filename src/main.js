@@ -113,9 +113,9 @@ k.loop(0.9,()=>{
 });
 
 // Random video trigger
-k.loop(3.0,()=>{
+k.loop(2.5,()=>{
   if(counter>=45 && counter<=155&&!videoStarted){
-    if(Math.random()<0.25){
+    if(Math.random()<0.27){
       if(!videoStarted){
         playVideo("videos/foxy.mp4",true,()=>{
           console.log("Video ended!");
