@@ -4,52 +4,64 @@ import { fireRing,ringState } from "./gameObjects/ring";
 import spawnBug from "./gameObjects/bug";
 import gameOverScene from "./scene/gameOver";
 
-//SETUP
+// SETUP
 k.setGravity(1500);
-
 spawnBug();
-k.loadSound("bgm","sounds/bg.mp3")
+
+
+//MUSIC SETUPs
+k.loadSound("bgm","sounds/bg.mp3");
+k.loadSound("gameOver","sounds/vine.mp3")
+k.loadSound("ring","sounds/ring.mp3")
 
 let bgMusic=null;
+let gameOver=null;
+let ringGain=null;
 
-k.onLoad(()=>{
-  bgMusic=k.play("bgm",{
-    volume: 0.2,
-    loop:true,
-  })
-})
+let musicStarted=false;
+
+k.onKeyPress(()=>{
+  if(!musicStarted){
+    bgMusic=k.play("bgm",{
+      volume: 0.1,
+      loop: true,
+    });
+    musicStarted=true;
+  }
+});
+
+// GAME OVER SCENE
+if(gameOver) gameOver.stop()
 
 k.scene("game-over",(score)=>{
   if(bgMusic) bgMusic.stop();
+  gameOver=k.play("gameOver",{
+    volume: 0.1,
+  })
   gameOverScene(score);
 });
 
+// PLATFORM
 const platform=k.add([
   k.rect(k.width(),150),
   k.anchor("center"),
-  k.pos(k.width()/2,727),
+  k.pos(k.width() / 2,727),
   k.area(),
-  k.body({
-    isStatic: true,
-  }),
-])
+  k.body({ isStatic: true }),
+]);
 
-//CONTROLS
+// CONTROLS
 k.onKeyDown((key)=>{
-  if(key=='d'){
-    if(sonic.flipX){
-      sonic.flipX=false;
-    }
+  if(key==="d"){
+    if(sonic.flipX) sonic.flipX=false;
     sonic.move(sonic.speed,0);
-  }
-  else if(key=='a'){
-    if(!sonic.flipX){
-      sonic.flipX=true;
-    }
+  } else if(key==="a"){
+    if(!sonic.flipX) sonic.flipX=true;
     sonic.move(-sonic.speed,0);
   }
 });
 
+// UPDATE LOOP
 let lastFrameGround=false;
 k.onUpdate(()=>{
   if(!lastFrameGround && sonic.isGrounded()){
@@ -57,19 +69,19 @@ k.onUpdate(()=>{
     sonic.play("run");
   }
   lastFrameGround=sonic.isGrounded();
-})
+});
 
+// JUMP
 k.onKeyPress("space",()=>{
   if(sonic.totalJump>0){
-      sonic.jump();
-      sonic.play("jump");
-      sonic.totalJump--;
+    sonic.jump();
+    sonic.play("jump");
+    sonic.totalJump--;
   }
   console.log(sonic.totalJump);
-})
+});
 
-//SCORE & BULLET DISPLAY
-
+// SCORE & BULLET DISPLAY
 export const bulletCount=k.add([
   k.text("Rings: 0"),
   k.scale(2),
@@ -87,13 +99,16 @@ const timer=k.add([
 k.loop(0.9,()=>{
   counter++;
   timer.text=`Current Score: ${counter}`;
-  if(counter%5==0){
+  if(counter%5===0){
     ringState.bullet++;
+    ringGain=k.play("ring",{
+      volume: 0.1,
+    })
     bulletCount.text=`Rings: ${ringState.bullet}`;
   }
 });
 
-//COLLIDE LOGIC
+// SHOOT LOGIC
 k.onKeyPress("l",()=>{
   const ring=fireRing();
   if(ring){
@@ -102,10 +117,9 @@ k.onKeyPress("l",()=>{
       ring.destroy();
     });
   }
-
 });
 
-//GAME OVER SCREEN
+// GAME OVER CONDITIONS
 sonic.onCollide("bug",()=>{
   k.shake();
   sonic.destroy();
@@ -116,4 +130,11 @@ sonic.onExitScreen(()=>{
   k.shake();
   sonic.destroy();
   k.go("game-over",counter);
+});
+
+// REFRESH
+k.onKeyDown((key)=>{
+  if(key.toLowerCase()==="r"){
+    window.location.reload();
+  }
 });

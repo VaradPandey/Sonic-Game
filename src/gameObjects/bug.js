@@ -18,13 +18,13 @@ function spawnBug(){
       k.scale(2),
       k.anchor("center"),
       k.area({
-        shape: new k.Rect(k.vec2(-5,0),45,32),
+        shape: new k.Rect(k.vec2(-5,0),40,28),
       }),
       k.pos(k.width()/2+940,k.height()/2+80),
       k.body({
         isStatic: true,
       }),
-      k.move(k.vec2(-1,0),1500),
+      k.move(k.vec2(-1,0),1000),
       "bug",
       k.offscreen(),
     ])
