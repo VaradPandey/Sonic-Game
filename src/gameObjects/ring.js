@@ -1,6 +1,5 @@
 import k from "../kaplayCtx";
-import sonic from "./sonic";
-import { bulletCount } from "../main";
+import { gameState } from "../gameState";
 
 k.loadSprite("ring","graphics/ring.png",{
     sliceX: 16,
@@ -18,20 +17,27 @@ k.loadSprite("ring","graphics/ring.png",{
 export const ringState={
     bullet: 0,
 };
+
 let canFire=true;
+
 export function fireRing(){
-    if(!canFire || !sonic.isGrounded() || ringState.bullet==0){
+    if(!canFire || !gameState.sonic.isGrounded() || ringState.bullet==0){
         return;
     }
+
     ringState.bullet--;
-    bulletCount.text=`Rings: ${ringState.bullet}`;
-    console.log("RING FIRED");
-    const direction=sonic.flipX?-1:1;
+
+    if(gameState.bulletCount){
+        gameState.bulletCount.text=`Rings: ${ringState.bullet}`;
+    }
+
+    const direction=gameState.sonic.flipX?-1:1;
+
     const ring=k.add([
         k.sprite("ring",{anim: "spin"}),
         k.area(),
         k.anchor("center"),
-        k.pos(sonic.pos.x+120*direction,k.height()/2+55),
+        k.pos(gameState.sonic.pos.x+120*direction,k.height()/2+55),
         k.scale(3),
         k.move(k.vec2(20*direction,0),850),
         k.body({

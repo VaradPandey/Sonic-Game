@@ -19,23 +19,27 @@ k.loadSprite("sonic","graphics/sonic.png",{
     },
 });
 
-const sonic=k.add([
-    k.sprite("sonic",{
-      anim: "run",
-      flipX: false
-    }),
-    k.area({
-      shape: new k.Rect(k.vec2(0,3),40,42),
-    }),
-    k.anchor("center"),
-    k.scale(5,5),
-    k.pos(400,532),
-    k.body(),
-    {
-      speed:350,
-      totalJump: 2,
-    },
-    k.offscreen(),
-]);
+export function createSonic(){
 
-export default sonic;
+  const sonic=k.add([
+      k.sprite("sonic",{
+        anim: "run",
+        flipX: false
+      }),
+      k.area({
+        shape: new k.Rect(k.vec2(0,3),40,42),
+      }),
+      k.anchor("center"),
+      k.scale(5,5),
+      k.pos(400,532),
+      k.body(),
+      {
+        speed:350,
+        totalJump: 2,
+      },
+      k.offscreen(),
+  ]);
+
+  return sonic;
+  
+}
