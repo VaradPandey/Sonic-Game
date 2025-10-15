@@ -19,8 +19,10 @@ export default function gameplayScene(){
     k.loadSound("ringShoot","sounds/ringshoot.mp3");
 
     let bgMusic=null;
+
     let musicStarted=false;
     let videoStarted=false;
+    
 
     // Start music when first key pressed
     k.onKeyPress(()=>{
@@ -97,15 +99,15 @@ export default function gameplayScene(){
     });
 
     // VIDEO RANDOM TRIGGER
-    k.loop(2.0,()=>{
-        if(counter>=40 && counter<=155 && !videoStarted){
-            if(Math.random()<0.25){
-            if(bgMusic) bgMusic.stop();
-            playVideo("videos/foxy.mp4",true,()=>{
-                console.log("Video ended!");
-                videoStarted=false;
-                if(bgMusic) bgMusic.play();
-            });
+    k.loop(6.4,()=>{
+        if(counter>=20 && !videoStarted){
+            if(Math.random()<0.17){
+                if(bgMusic) bgMusic.stop();
+                playVideo("videos/foxy.mp4",true,()=>{
+                    console.log("Video ended!");
+                    videoStarted=false;
+                    if(bgMusic) bgMusic.play();
+                });
             videoStarted=true;
             }
         }
@@ -134,6 +136,8 @@ export default function gameplayScene(){
         if(gameState.sonic){
             gameState.sonic.destroy();
         }
+
+        k.play("gameOver",{volume: 0.5})
 
         k.go("gameover",score);
     };
