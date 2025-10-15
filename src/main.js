@@ -27,7 +27,7 @@ let videoStarted=false;
 k.onKeyPress(()=>{
   if(!musicStarted){
     bgMusic=k.play("bgm",{
-      volume: 0.1,
+      volume: 0.3,
       loop: true,
     });
     musicStarted=true;
@@ -40,7 +40,7 @@ if(gameOver) gameOver.stop()
 k.scene("game-over",(score)=>{
   if(bgMusic) bgMusic.stop();
   gameOver=k.play("gameOver",{
-    volume: 0.1,
+    volume: 0.2,
   })
   gameOverScene(score);
 });
@@ -106,21 +106,21 @@ k.loop(0.9,()=>{
   if(counter%5===0){
     ringState.bullet++;
     ringGain=k.play("ring",{
-      volume: 0.1,
+      volume: 0.2,
     })
     bulletCount.text=`Rings: ${ringState.bullet}`;
   }
 });
 
 // Random video trigger
-k.loop(2.5,()=>{
-  if(counter>=45 && counter<=155&&!videoStarted){
-    if(Math.random()<0.27){
+k.loop(2.0,()=>{
+  if(counter>=40 && counter<=155&&!videoStarted){
+    if(Math.random()<0.25){
       if(!videoStarted){
+        if(bgMusic) bgMusic.stop();
         playVideo("videos/foxy.mp4",true,()=>{
           console.log("Video ended!");
         });
-        if(bgMusic) bgMusic.stop();
       }
       videoStarted=true;
     }
@@ -137,7 +137,7 @@ k.onKeyPress("l",()=>{
       ring.destroy();
     });
     ringShoot=k.play("ringShoot",{
-      volume: 0.1,
+      volume: 0.3,
     })
   }
 });
