@@ -4,10 +4,14 @@ import spawnBug from "../gameObjects/bug";
 import { playVideo } from "../utils/popup";
 import { gameState } from "../gameState";
 import { createSonic } from "../gameObjects/sonic";
+import background from "../gameObjects/background";
+import platform from "../gameObjects/platform";
 
 export default function gameplayScene(){
     // SETUP
     k.setGravity(1500);
+    background();
+    platform();
     spawnBug();
     gameState.sonic=createSonic();
     ringState.bullet=0;
@@ -30,25 +34,6 @@ export default function gameplayScene(){
         bgMusic=k.play("bgm",{ volume: 0.3,loop: true });
         musicStarted=true;
         }
-    });
-
-    // PLATFORM
-    const platform=k.add([
-        k.rect(k.width(),150),
-        k.anchor("center"),
-        k.pos(k.width()/2,727),
-        k.area(),
-        k.body({ isStatic: true }),
-    ]);
-
-    let lastFrameGround = false;
-
-    k.onUpdate(()=>{
-        if(!lastFrameGround && gameState.sonic.isGrounded()){
-            gameState.sonic.totalJump=2;
-            gameState.sonic.play("run");
-        }
-        lastFrameGround=gameState.sonic.isGrounded();
     });
 
     // CONTROLS
